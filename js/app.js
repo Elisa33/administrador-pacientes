@@ -20,7 +20,12 @@ class Citas {
 		this.citas = [...this.citas, cita];
 	}
 	eliminarCita(id) {
-		this.citas = this.citas.filter((cita) => cita.id !== cita.id);
+		this.citas = this.citas.filter((cita) => cita.id !== id);
+	}
+	editarCita(citaActualizada) {
+		this.citas = this.citas.map((cita) =>
+			cita.id === citaActualizada.id ? citaActualizada : cita
+		);
 	}
 }
 
@@ -82,7 +87,8 @@ class UI {
 			// boton eliminar
 			const btnEliminar = document.createElement('button');
 			btnEliminar.classList.add('btn', 'btn-danger', 'mr-2');
-			btnEliminar.innerHTML = `Eliminar <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>`;
+			btnEliminar.innerHTML =
+				'Eliminar <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>';
 
 			btnEliminar.onclick = () => eliminarCita(id);
 
@@ -157,9 +163,12 @@ function nuevaCita(e) {
 		ui.imprimirAlerta('Todos los campos son obligatorios', 'error');
 		return;
 	}
+
 	if (editando) {
-		ui.imprimirAlerta('Se agregó correctamente');
+		ui.imprimirAlerta('Editado correctamente');
 		//pasar el objeto de la cita
+		administrarCitas.editarCita({ ...citaObj });
+		// regresa el boton a su estado orginal
 		formulario.querySelector('button[type="submit"]').textContent =
 			'Crear Cita';
 		editando = false;
@@ -197,7 +206,7 @@ function eliminarCita(id) {
 }
 
 function cargarEdicion(cita) {
-	const { mascota, propietario, telefono, fecha, hora, sintomas } = cita;
+	const { mascota, propietario, telefono, fecha, hora, sintomas, id } = cita;
 
 	// llenar inputs
 	mascotaInput.value = mascota;
