@@ -7,6 +7,3 @@ Technologies:
 * class/instance
 * bootstrap
 
-## Deploy
-
-[Here](https://quizzical-borg-18c6fe.netlify.app/)
